@@ -4,4 +4,7 @@ TypeScript SDK for the Prismon Web3 platform, supporting Solana, Blob storage, a
 
 ## Installation
 ```bash
-npm install prismon-sdk @solana/web3.js @microsoft/signalr @solana/spl-token bs58
+npm install @prismon/sdk @solana/web3.js
+
+## 📖 Documentation
+For full usage guides, visit [here](https://lucky-israel.gitbook.io/prismon-docs).
