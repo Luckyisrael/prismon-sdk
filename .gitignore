@@ -1,0 +1,36 @@
+# Dependency directories
+node_modules/
+**/node_modules/
+
+# Build output
+dist/
+**/dist/
+lib/
+**/lib/
+build/
+**/build/
+*.js
+*.js.map
+*.d.ts
+
+# Cache & temporary files
+.cache/
+.temp/
+.tmp/
+*.tmp
+
+# Logs
+logs/
+*.log
+yarn-debug.log*
+yarn-error.log*
+
+# Editor/IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+
+
+yarn.lock

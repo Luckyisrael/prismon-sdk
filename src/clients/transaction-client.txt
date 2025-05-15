@@ -1,0 +1,64 @@
+import * as signalR from "@microsoft/signalr";
+import { TransactionUpdate, TransactionStats, TransactionFilter } from "../types";
+import { AuthenticationError } from "../errors";
+
+export class TransactionClient {
+  private connection: signalR.HubConnection | null = null;
+
+  constructor(
+    private baseUrl: string,
+    private apiKey: string,
+    private jwtToken: string | null
+  ) {}
+
+  /**
+   * Start transaction monitoring
+   * @param userId User ID
+   * @param filter Transaction filters
+   * @param onUpdate Callback for transaction updates
+   * @param onStats Callback for transaction stats
+   * @example
+   * await client.transactions.start(
+   *   "user123",
+   *   { actionType: "StoreBlob" },
+   *   (update) => console.log("Update:", update),
+   *   (stats) => console.log("Stats:", stats)
+   * );
+   */
+  async start(
+    userId: string,
+    filter: TransactionFilter,
+    onUpdate: (update: TransactionUpdate) => void,
+    onStats?: (stats: TransactionStats) => void
+  ): Promise<void> {
+    if (!this.jwtToken) throw new AuthenticationError("Not authenticated");
+
+    this.connection = new signalR.HubConnectionBuilder()
+      .withUrl(`${this.baseUrl}/ws/transactions`, {
+        accessTokenFactory: () => this.jwtToken,
+        headers: { "X-API-Key": this.apiKey },
+      })
+      .withAutomaticReconnect()
+      .build();
+
+    this.connection.on("TransactionUpdate", onUpdate);
+    if (onStats) this.connection.on("TransactionStats", onStats);
+
+    try {
+      await this.connection.start();
+      await this.connection.invoke("SubscribeToTransactions", userId, this.apiKey, filter);
+    } catch (error) {
+      throw new AuthenticationError(error);
+    }
+  }
+
+  /**
+   * Stop transaction monitoring
+   */
+  async stop(): Promise<void> {
+    if (this.connection) {
+      await this.connection.stop();
+      this.connection = null;
+    }
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "name": "@prismon/sdk",
+  "version": "1.0.0",
+  "description": "TypeScript SDK for Prismon Web3 platform",
+  "main": "dist/index.js",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "prepublish": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/Luckyisrael/prismon-sdk.git"
+  },
+  "author": "Luckyisrael <luckyisrael4real@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "@microsoft/signalr": "^8.0.0",
+    "@solana/spl-token": "^0.4.13",
+    "@solana/wallet-adapter-react": "0.15.35",
+    "@solana/web3.js": "1.95.3",
+    "axios": "^1.8.4",
+    "bs58": "6.0.0",
+    "react": "18.2.0",
+    "react-dom": "18.2.0"
+  },
+  "devDependencies": {
+    "@types/react": "18.2.0",
+    "typescript": "^5.8.3"
+  }
+}
